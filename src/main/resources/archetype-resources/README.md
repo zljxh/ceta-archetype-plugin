@@ -49,6 +49,7 @@
 ------------------------------------------------------------------------
 
 ### \### Step 2 --- 在 `${package}.connector.connector` 创建 ConnectorInstance
+> **⚠️ 注意**：为了性能,请尽量使用缓存，`cache`,`expires`,`timeUnit`在http-connector篇有介绍。
 
 示例：
 

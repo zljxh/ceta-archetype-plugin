@@ -80,7 +80,7 @@ mvn archetype:generate \
 
 ## 📁 Step3 --- 生成后的项目结构
 
-执行命令后，会在当前目录生成项目：
+执行命令后，会在当前目录生成项目,请详细阅读生成项目中的 `README.md` 文件：
 
     my-plugin/
 
