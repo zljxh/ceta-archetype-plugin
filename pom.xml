@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.ceta</groupId>
+    <artifactId>ceta-archetype-plugin</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+    <properties>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <build>
+        <extensions>
+            <extension>
+                <groupId>org.apache.maven.archetype</groupId>
+                <artifactId>archetype-packaging</artifactId>
+                <version>3.2.1</version> </extension>
+        </extensions>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <artifactId>maven-archetype-plugin</artifactId>
+                    <version>3.2.1</version>
+                </plugin>
+
+<!--                <plugin>-->
+<!--                    <groupId>org.apache.maven.plugins</groupId>-->
+<!--                    <artifactId>maven-antrun-plugin</artifactId>-->
+<!--                    <version>3.1.0</version>-->
+<!--                    <executions>-->
+<!--                        <execution>-->
+<!--                            <id>validate-forbidden-package</id>-->
+<!--                            <phase>validate</phase>-->
+<!--                            <goals>-->
+<!--                                <goal>run</goal>-->
+<!--                            </goals>-->
+<!--                            <configuration>-->
+<!--                                <target>-->
+<!--                                    <property name="forbidden.word" value="com.alibaba"/>-->
+<!--                                    <property name="current.package" value="${package}"/> <condition property="package.is.forbidden">-->
+<!--                                    <contains string="${current.package}" substring="${forbidden.word}"/>-->
+<!--                                </condition>-->
+
+<!--                                    <fail message="错误：您输入的包名 '${current.package}' 包含禁止使用的字符串 '${forbidden.word}'。请使用其他包名生成项目。">-->
+<!--                                        <condition>-->
+<!--                                            <istrue value="${package.is.forbidden}"/>-->
+<!--                                        </condition>-->
+<!--                                    </fail>-->
+
+<!--                                    <echo message="包名校验通过：${current.package}。开始下一步构建..."/>-->
+<!--                                </target>-->
+<!--                            </configuration>-->
+<!--                        </execution>-->
+<!--                    </executions>-->
+<!--                </plugin>-->
+
+
+            </plugins>
+        </pluginManagement>
+    </build>
+
+</project>
