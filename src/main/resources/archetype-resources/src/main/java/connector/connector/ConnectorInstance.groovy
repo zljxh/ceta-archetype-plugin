@@ -11,7 +11,11 @@ public class ConnectorInstance {
         return ["connectorInstance": buildInstance(inputs)]
     }
 
+    // inputs are the inputs of the connectorType
     def buildInstance(Map inputs) {
+        // The three values "cache": true, "expires": 15000, "timeUnit": "HOURS" refer to the connectorType documentation
+        // executeScriptResult is the result of executing the script, initialized as null here
+        return ["cache": true, "expires": 15000, "timeUnit": "HOURS", executeScriptResult: null]
     }
 }
 

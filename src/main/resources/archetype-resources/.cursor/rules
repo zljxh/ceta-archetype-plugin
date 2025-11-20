@@ -1,0 +1,7 @@
+# Cursor AI Rules
+rules:
+  - "Always use Java 17 and Groovy 4 syntax."
+  - "When generating code, prefer Spock for Groovy tests and JUnit 5 for Java tests."
+  - "Ensure compatibility between Groovy and Java classes."
+  - "Use meaningful method names and include minimal docs in Java."
+  - "Suggest refactorings to reduce boilerplate in mixed Java/Groovy projects."
