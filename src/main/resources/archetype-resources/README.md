@@ -11,11 +11,11 @@
 
 ### ❌ Groovy 版本依赖（`pom.xml`）
 
--   **原因：** 更改会导致插件运行时错误，影响执行环境兼容性。
+- **原因：** 更改会导致插件运行时错误，影响执行环境兼容性。
 
 ### ❌ 已有 `<plugin>` 配置（`pom.xml`）
 
--   **原因：** 修改已存在插件配置，可能导致构建失败或运行异常。
+- **原因：** 修改已存在插件配置，可能导致构建失败或运行异常。
 
 ------------------------------------------------------------------------
 
@@ -23,14 +23,14 @@
 
 在不影响核心配置的前提下，您可以：
 
--   在 `<dependencies>` 中 **新增依赖**
--   在 `<plugins>` 中 **新增插件配置**
+- 在 `<dependencies>` 中 **新增依赖**
+- 在 `<plugins>` 中 **新增插件配置**
 
 > 💡 注意：只能添加，不能修改或删除已有关键配置。
 
 ------------------------------------------------------------------------
 
-## 📘 插件开发步骤
+## sdk-connector📘 插件开发步骤
 
 ### \### Step 1 --- 在 `pom.xml` 添加所需依赖
 
@@ -43,12 +43,14 @@
     <version>2.20.160</version>
 </dependency>
 ```
+
 如图
 ![s3-dependency](./s3-dependency.png)
 
 ------------------------------------------------------------------------
 
 ### \### Step 2 --- 在 `${package}.connector.connector` 创建 ConnectorInstance
+
 > **⚠️ 注意**：为了性能,请尽量使用缓存，`cache`,`expires`,`timeUnit`在http-connector篇有介绍。
 
 示例：
@@ -78,6 +80,7 @@ public class ConnectorInstance {
   }
 }
 ```
+
 如图
 ![s3-connector-instance](./s3-connector-instance.png)
 ------------------------------------------------------------------------
@@ -123,6 +126,7 @@ class UploadAction {
   }
 }
 ```
+
 如图
 ![s3-upload-action](./s3-upload-action.png)
 
@@ -140,6 +144,7 @@ ConnectorInstance connectorInstance = new ConnectorInstance()
 def instance = connectorInstance.buildInstance(inputs)
 return instance
 ```
+
 如图
 ![s3-connector-type](./s3-connector-type.png)
 ------------------------------------------------------------------------
@@ -155,13 +160,102 @@ UploadAction uploadAction = new UploadAction()
 return uploadAction.uploadFile(connectorInstance, inputs)
 
 ```
+
 如图
 ![s3-upload-action](./s3-upload-action-script.png)
+
+## 🎉 你在flow中可以调用该action
+
+
+------------------------------------------------------------------------
+
+## groovy-sdk📘 插件开发步骤
+
+### \### Step 1 --- 在 `pom.xml` 添加所需依赖
+
+例如，若需要与 S3 交互，可以添加：
+
+``` xml
+<dependency>
+    <groupId>software.amazon.awssdk</groupId>
+    <artifactId>s3</artifactId>
+    <version>2.20.160</version>
+</dependency>
+```
+
+如图
+![s3-dependency](./s3-dependency.png)
+------------------------------------------------------------------------
+
+### \### Step 2 --- 在 `${package}.sdk` 创建 Sdk
+
+
+示例：
+
+``` java
+package com.example.plugin.sdk
+
+import software.amazon.awssdk.auth.credentials.AwsBasicCredentials
+import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider
+import software.amazon.awssdk.services.s3.S3Client
+import software.amazon.awssdk.services.s3.model.PutObjectRequest
+
+class UploadFileSdk {
+    uploadFileSdk(String accessKey, String secretKey, String bucketName, String keyName, String filePath) {
+        AwsBasicCredentials credentials = AwsBasicCredentials.create(accessKey, secretKey)
+        StaticCredentialsProvider credentialsProvider = StaticCredentialsProvider.create(credentials)
+
+        S3Client s3 = S3Client.builder()
+                .region(Region.AP_SOUTHEAST_1)
+                .credentialsProvider(credentialsProvider)
+                .build()
+
+        try {
+            PutObjectRequest putObjectRequest = PutObjectRequest.builder()
+                    .bucket(bucketName)
+                    .key(keyName)
+                    .build()
+
+            s3.putObject(putObjectRequest, RequestBody.fromFile(Path.of(filePath)))
+            return ["message": "success"]
+        } finally {
+            s3.close()
+        }
+
+    }
+}
+
+```
+
+如图
+![s3-action](./s3-action.png)
+
+------------------------------------------------------------------------
+
+## 🧩 在 CETA 中如何调用？
+
+### ① 创建 Groovy Sdk
+
+核心代码
+``` java
+
+import com.example.plugin.sdk.UploadFileSdk
+
+
+UploadFileSdk uploadFileSdk = new UploadFileSdk()
+return uploadFileSdk.uploadFileSdk(accessKey, secretKey, bucketName, keyName, filePath)
+
+```
+如图
+![s3-groovy-sdk](./s3-groovy-sdk.png)
+
+## 🎉 你在flow中可以调用该groovy sdk
+
 ------------------------------------------------------------------------
 
 ## 🎉 完成！
 
 您现在已经掌握插件开发的核心流程，包括依赖添加、Connector 构建、Action
-执行与 CETA 中的调用方式。
+执行,Groovy sdk 与 CETA 中的调用方式。
 
 如需帮助，可随时继续扩展或询问。
